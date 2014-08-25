@@ -1,0 +1,1 @@
+javac Life.java

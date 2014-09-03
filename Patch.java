@@ -6,11 +6,15 @@ public class Patch{
     //private Neighbors _neighbors;
 
     public Patch(int x, int y, Patch[][] grid){
-        _label = "o";
+        _label = ".";
         //_neighbors = getNeighbors();
         _pxcor = x;
         _pycor = y;
         _grid = grid;
+    }
+
+    public String toString() {
+        return _label;
     }
 
     public int getX(){
@@ -22,15 +26,15 @@ public class Patch{
     }
 
     public void turnOn(){
-	_label = "X";
+	_label = "x";
     }
 
     public void turnOff(){
-	_label = "o";
+	_label = ".";
     }
 
     public boolean isAlive(){
-	return (_label.equals("X"));
+	return (_label.equals("x"));
     }
 
     public int gridSize(){
@@ -45,14 +49,16 @@ public class Patch{
         int b = getY() - 1;
         int c = getX() + 1;
         int d = getY() + 1;
-        if (getX() == 0)
+
+        if (getX() <= 0)
             a = gridSize() - 1;
-        if (getY() == 0)
+        if (getY() <= 0)
             b = gridSize() - 1;
-        if (getX() == gridSize() - 1)
+        if (getX() >= gridSize() - 1)
             c = 0;
-        if (getX() == gridSize() - 1)
+        if (getY() >= gridSize() - 1)
             d = 0;
+
         neighbors.add(_grid[a][b]);
         neighbors.add(_grid[getX()][b]);
         neighbors.add(_grid[c][b]);
@@ -66,8 +72,9 @@ public class Patch{
 
     public int countAlive(){
         int ans = 0;
+        Neighbors neighbors = getNeighbors();
         for(int index = 0; index < 8; index++){
-            if(getNeighbors().getList()[index].isAlive())
+            if(neighbors.get(index).isAlive())
                 ans++;
         }
         return ans;

@@ -12,7 +12,7 @@ public class Neighbors{
         int ans = 0;
         int pass = 0;
         int index = 0;
-        while(pass < _list.length()){
+        while(pass < _list.size()){
             if(_list.get(index).isAlive()){
                 ans++;
             }
@@ -21,14 +21,11 @@ public class Neighbors{
     }
 
     public void add(Patch p){
-        /*
-        for(int index = 0; index < _list.length; index++){
-            if(_list[index].equals(null)){
-                _list[index] = p;
-            }
-        }
-        */
         _list.add(p);
+    }
+
+    public Patch get(int index) {
+        return (Patch)(_list.get(index));
     }
 
     public ArrayList<Patch> getList(){

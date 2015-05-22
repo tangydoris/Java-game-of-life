@@ -1,4 +1,8 @@
+import java.util.IllegalFormatException;
 import java.util.Random;
+import java.util.Scanner;
+import java.util.concurrent.TimeUnit;
+import java.lang.InterruptedException;
 //import Keyboard;
 
 public class Life{
@@ -69,16 +73,19 @@ public class Life{
         return ans;
     }
 
-    public void go(){
+    public void go() throws InterruptedException{
         System.out.println("Starting Game Of Life. This is your board: ");
 
         fillGrid();
         System.out.println(this);
-        System.out.println("population: " + population() + "\n");
+        String output = "Population: " + population() + "\n";
+        System.out.println(output);
+        TimeUnit.MILLISECONDS.sleep(650);
+        clearScreen();
 
-        System.out.println("Continue? <Y/N> ");
-        String d = Keyboard.readString();
-        while(!d.equals("N")) {
+        //System.out.println("Continue? <Y/N> ");
+        //String d = Keyboard.readString();
+        while(!output.equals("Game Over")) {
             for (int row = 0; row < size(); row++) {
                 for (int col = 0; col < size(); col++) {
                     if (_grid[row][col].countAlive() >= 3) {
@@ -92,26 +99,56 @@ public class Life{
 
             System.out.println(this);
             setPopulation(countTotalAlive());
-            System.out.println("population: " + population() + "\n");
+            output = "Population: " + population() + "\n";
+            System.out.println(output);
 
             if (population()<=0 || population()>=(size()*size())) {
-                break;
+                output = "Game Over";
             }
 
-            System.out.println("Continue? <Y/N> ");
-            d = Keyboard.readString();
+            TimeUnit.MILLISECONDS.sleep(650);
+
+            //System.out.println("Continue? <Y/N> ");
+            //d = Keyboard.readString();
             clearScreen();
         }
-        System.out.println("Game Over");
+        System.out.println(output);
         return;
     }
 
     public static void clearScreen(){
-        System.out.println("\n\n\n\n\n\n\n\n\n\n");
+        System.out.println("\n\n\n\n\n\n\n\n");
     }
 
-    public static void main(String[]args){
-        Life life = new Life(15, 20);
+    public static void main(String[]args) throws InterruptedException{
+        Scanner s = new Scanner(System.in);
+        System.out.println("Enter dimension of board (press ENTER to use default): ");
+        String in = s.nextLine();
+        int size = 20;
+        int population = 50;
+        while (!in.equals("")) {
+            try {
+                size = Integer.parseInt(in);
+                System.out.println("Entered "+size);
+                break;
+            } catch (IllegalFormatException ife) {
+                System.out.println("Invalid number, try again: ");
+                in = s.nextLine();
+            }
+        }
+        System.out.println("Enter population (press ENTER to use default): ");
+        in = s.nextLine();
+        while (!in.equals("")) {
+            try {
+                population = Integer.parseInt(in);
+                break;
+            } catch (IllegalFormatException ife) {
+                System.out.println("Invalid number, try again: ");
+                in = s.nextLine();
+            }
+        }
+
+        Life life = new Life(size, population);
         life.go();
     }
 
